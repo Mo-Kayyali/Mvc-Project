@@ -1,5 +1,6 @@
 ﻿global using Demo.BusinessLogic.DataTransferObjects;
 global using Demo.DataAccess.Repositories;
+using Demo.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Services
 {
-    public class DepartmentService(IDepartmentRepository repository) : IDepartmentService
+    public class DepartmentService(IGenericRepository<Department> repository) : IDepartmentService
     {
-        private readonly IDepartmentRepository _repository = repository;
+        private readonly IGenericRepository<Department> _repository = repository;
 
         //GetAll
         public IEnumerable<DepartmentResponse> GetAll()
