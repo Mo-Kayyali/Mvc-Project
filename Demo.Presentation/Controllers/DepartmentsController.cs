@@ -1,7 +1,4 @@
 ﻿using Azure.Core;
-using Demo.BusinessLogic.DataTransferObjects;
-using Demo.BusinessLogic.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Presentation.Controllers
 {

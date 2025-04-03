@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferObjects
+namespace Demo.BusinessLogic.DataTransferObjects.Departments
 {
     public static class DepartmentFactory
     {
@@ -41,7 +41,7 @@ namespace Demo.BusinessLogic.DataTransferObjects
 
         public static Department ToEntity(this DepartmentUpdateRequest departmentRequest) => new()
         {
-            Id= departmentRequest.Id,
+            Id = departmentRequest.Id,
             Name = departmentRequest.Name,
             Description = departmentRequest.Description,
             Code = departmentRequest.Code,
