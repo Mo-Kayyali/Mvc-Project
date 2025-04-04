@@ -13,6 +13,11 @@ namespace Demo.Presentation.Controllers
         public IActionResult Index()
         {
             var departments = _departmentService.GetAll();
+
+            
+            //ViewData["message"] = new DepartmentDetailsResponse { Name = "Department02" };
+            ViewBag.Message = new DepartmentDetailsResponse { Name = "Department02" };
+
             return View(departments);
         }
 
@@ -20,17 +25,24 @@ namespace Demo.Presentation.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(DepartmentRequest request)
         {
             if(!ModelState.IsValid) return View(request);
-
+            string message;
             try
             {
                 var result = _departmentService.Add(request);
-                if (result > 0) return RedirectToAction(nameof(Index));
+                if (result > 0) message = $"Department {request.Name} Created";
+                else
+                {
+                    message=$"can't Create Department {request.Name}";
+                }
+                TempData["Message"] = message;
+                    
+                return RedirectToAction(nameof(Index));
 
-                ModelState.AddModelError(string.Empty,"Can't Create Department Now");
-                return View(request);
+                
             }
             catch (Exception ex)
             {
@@ -63,7 +75,7 @@ namespace Demo.Presentation.Controllers
 
             var department = _departmentService.GetById(id.Value);
             if (department is null) return NotFound();
-            return View(department.ToRequest());
+            return View(department.ToUpdateRequest());
         }
 
         [HttpPost]

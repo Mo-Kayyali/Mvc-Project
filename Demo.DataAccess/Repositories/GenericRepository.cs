@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,5 +43,12 @@ namespace Demo.DataAccess.Repositories
             _context.Set<TEntity>().Remove(entity);
             return _context.SaveChanges();
         }
+
+        public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector) =>
+            _context.Set<TEntity>().AsNoTracking().Where(D => !D.IsDeleted).Select(selector).ToList();
+
+
+        //public IQueryable<TEntity> GetAllQueryable() =>
+        //    _context.Set<TEntity>().AsNoTracking().Where(D => !D.IsDeleted);
     }
 }

@@ -47,13 +47,20 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
             Code = departmentRequest.Code,
         };
 
-        public static DepartmentUpdateRequest ToRequest(this DepartmentDetailsResponse department) => new()
+        public static DepartmentUpdateRequest ToUpdateRequest(this DepartmentDetailsResponse department) => new()
         {
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
             CreatedOn = DateOnly.FromDateTime(department.CreatedOn),
             Code = department.Code,
+        };
+
+        public static DepartmentRequest ToRequest(this DepartmentUpdateRequest departmentRequest) => new()
+        {
+            Name = departmentRequest.Name,
+            Description = departmentRequest.Description,
+            Code = departmentRequest.Code,
         };
     }
 }

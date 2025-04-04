@@ -15,9 +15,36 @@ namespace Demo.BusinessLogic.Services
         //GetAll
         public IEnumerable<EmployeeResponse> GetAll()
         {
-            var Employees = _repository.GetAll();
+            //var Employees = _repository.GetAll();
 
-            return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResponse>>(Employees);
+            //return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResponse>>(Employees);
+
+
+            //var employees = _repository.GetAllQueryable().Select(e => new EmployeeResponse
+            //{
+            //    Id = e.Id,
+            //    Age = e.Age,
+            //    Email = e.Email,
+            //    EmployeeType = e.EmployeeType.ToString(),
+            //    Gender = e.Gender.ToString(),
+            //    IsActive = e.IsActive,
+            //    Name    = e.Name,
+            //    Salary = e.Salary,
+            //});
+
+            var employees = _repository.GetAll(e=>new EmployeeResponse
+            {
+                Id = e.Id,
+                Age = e.Age,
+                Email = e.Email,
+                EmployeeType = e.EmployeeType.ToString(),
+                Gender = e.Gender.ToString(),
+                IsActive = e.IsActive,
+                Name = e.Name,
+                Salary = e.Salary,
+            });
+            return employees;
+
         }
 
         //Get
