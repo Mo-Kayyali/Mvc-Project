@@ -1,4 +1,6 @@
-﻿using Demo.DataAccess.Models.Common;
+﻿using Demo.BusinessLogic.Services;
+using Demo.DataAccess.Models.Common;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Demo.Presentation.Controllers
 {
@@ -10,14 +12,22 @@ namespace Demo.Presentation.Controllers
         private readonly ILogger<EmployeesController> _logger = logger;
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? SearchValue)
         {
-            var Employees = _EmployeeService.GetAll();
+
+            var Employees = _EmployeeService.GetAll(SearchValue);
             return View(Employees);
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create([FromServices] IDepartmentService departmentService)
+        {
+            var departments = departmentService.GetAll();
+
+            var items = new SelectList(departments,nameof(DepartmentResponse.Id),nameof(DepartmentResponse.Name));
+            ViewBag.Departments=items;
+            return View();
+        } 
 
         [HttpPost]
         public IActionResult Create(EmployeeRequest request)
@@ -57,7 +67,7 @@ namespace Demo.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id, [FromServices] IDepartmentService departmentService)
         {
             if (!id.HasValue) return BadRequest();
 
@@ -78,12 +88,17 @@ namespace Demo.Presentation.Controllers
                 PhoneNumber = Employee.PhoneNumber,
                 Salary = Employee.Salary,
             };
+            var departments = departmentService.GetAll();
+
+            var items = new SelectList(departments, nameof(DepartmentResponse.Id), nameof(DepartmentResponse.Name));
+            ViewBag.Departments = items;
             return View(employeeRequest);
         }
 
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, EmployeeUpdateRequest request)
         {
+
             if (id != request.Id) return BadRequest();
             try
             {

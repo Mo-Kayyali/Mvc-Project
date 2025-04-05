@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Services
 {
-    public class EmployeeService(IEmployeeRepository repository,IMapper mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfWork unitOfWork,IMapper mapper) : IEmployeeService
     {
-        private readonly IEmployeeRepository _repository = repository;
+        //private readonly IEmployeeRepository _unitOfWork.Employees = repository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
 
         //GetAll
-        public IEnumerable<EmployeeResponse> GetAll()
+        public IEnumerable<EmployeeResponse> GetAll(string? SeachValue)
         {
-            //var Employees = _repository.GetAll();
+            //var Employees = _unitOfWork.Employees.GetAll();
 
             //return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResponse>>(Employees);
 
 
-            //var employees = _repository.GetAllQueryable().Select(e => new EmployeeResponse
+            //var employees = _unitOfWork.Employees.GetAllQueryable().Select(e => new EmployeeResponse
             //{
             //    Id = e.Id,
             //    Age = e.Age,
@@ -32,7 +33,25 @@ namespace Demo.BusinessLogic.Services
             //    Salary = e.Salary,
             //});
 
-            var employees = _repository.GetAll(e=>new EmployeeResponse
+            if (string.IsNullOrWhiteSpace(SeachValue))
+            {
+
+                return _unitOfWork.Employees.GetAll(e => new EmployeeResponse
+                {
+                    Id = e.Id,
+                    Age = e.Age,
+                    Email = e.Email,
+                    EmployeeType = e.EmployeeType.ToString(),
+                    Gender = e.Gender.ToString(),
+                    IsActive = e.IsActive,
+                    Name = e.Name,
+                    Salary = e.Salary,
+                    Department = e.Department.Name
+                }, e => !e.IsDeleted,
+                e => e.Department);
+            }
+
+            return _unitOfWork.Employees.GetAll(e => new EmployeeResponse
             {
                 Id = e.Id,
                 Age = e.Age,
@@ -42,8 +61,12 @@ namespace Demo.BusinessLogic.Services
                 IsActive = e.IsActive,
                 Name = e.Name,
                 Salary = e.Salary,
-            });
-            return employees;
+                Department = e.Department.Name
+            }, e => !e.IsDeleted&&e.Name.ToLower().Contains(SeachValue.ToLower()),
+            e => e.Department);
+
+
+            //return employees;
 
         }
 
@@ -51,7 +74,7 @@ namespace Demo.BusinessLogic.Services
 
         public EmployeeDetailsResponse? GetById(int id)
         {
-            var Employee = _repository.GetById(id);
+            var Employee = _unitOfWork.Employees.GetById(id);
 
             return Employee is null ? null : _mapper.Map<Employee, EmployeeDetailsResponse>(Employee);
         }
@@ -60,26 +83,29 @@ namespace Demo.BusinessLogic.Services
         public int Add(EmployeeRequest request)
         {
             var Employee = _mapper.Map<EmployeeRequest, Employee>(request);
-            return _repository.Add(Employee);
+            _unitOfWork.Employees.Add(Employee);
+            return _unitOfWork.SaveChanges();
         }
 
         //Update
         public int Update(EmployeeUpdateRequest request)
         {
             var Employee = _mapper.Map<EmployeeUpdateRequest, Employee>(request);
-            return _repository.Update(Employee);
+            _unitOfWork.Employees.Update(Employee);
+            return _unitOfWork.SaveChanges();
         }
 
         //Delete
 
         public bool Delete(int id)
         {
-            var Employee = _repository.GetById(id);
+            var Employee = _unitOfWork.Employees.GetById(id);
 
             if (Employee is null) return false;
 
             Employee.IsDeleted=true;
-            return _repository.Update(Employee) > 0 ? true : false;
+            _unitOfWork.Employees.Update(Employee);
+            return _unitOfWork.SaveChanges() > 0 ? true : false;
         }
     }
 }

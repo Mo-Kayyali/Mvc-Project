@@ -33,6 +33,11 @@ namespace Demo.DataAccess.Data.Context.Configurations
                 type => type.ToString(),
                 type => Enum.Parse<EmployeeType>(type)
                 );
+
+            builder.HasOne(e => e.Department)
+                .WithMany(d => d.Employees)
+                .HasForeignKey(e => e.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Demo.BusinessLogic.Services
     {
         int Add(EmployeeRequest request);
         bool Delete(int id);
-        IEnumerable<EmployeeResponse> GetAll();
+        IEnumerable<EmployeeResponse> GetAll(string? SearchValue);
         EmployeeDetailsResponse? GetById(int id);
         int Update(EmployeeUpdateRequest request);
     }
