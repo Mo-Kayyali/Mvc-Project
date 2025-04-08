@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.DataAccess.Data.Migrations
 {
     [DbContext(typeof(Context.ApplicationDbContext))]
-    [Migration("20250405032941_EmployeeDepartmentRelationship")]
-    partial class EmployeeDepartmentRelationship
+    [Migration("20250407080006_AddEmployeeImage")]
+    partial class AddEmployeeImage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,9 @@ namespace Demo.DataAccess.Data.Migrations
 
                     b.Property<DateOnly>("HiringDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

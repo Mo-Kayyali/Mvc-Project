@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demo.Presentation.Controllers
 {
@@ -8,7 +9,7 @@ namespace Demo.Presentation.Controllers
         private readonly IDepartmentService _departmentService = departmentService;
         private readonly IWebHostEnvironment _env = webHostEnvironment;
         private readonly ILogger<DepartmentsController> _logger = logger;
-
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -20,7 +21,7 @@ namespace Demo.Presentation.Controllers
 
             return View(departments);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Create() => View();
 
@@ -36,7 +37,7 @@ namespace Demo.Presentation.Controllers
                 if (result > 0) message = $"Department {request.Name} Created";
                 else
                 {
-                    message=$"can't Create Department {request.Name}";
+                    message=$"Can't Create Department {request.Name}";
                 }
                 TempData["Message"] = message;
                     
@@ -57,7 +58,7 @@ namespace Demo.Presentation.Controllers
             return View(request);
 
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Details(int? id)
         {
@@ -77,7 +78,7 @@ namespace Demo.Presentation.Controllers
             if (department is null) return NotFound();
             return View(department.ToUpdateRequest());
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Edit([FromRoute]int id, DepartmentUpdateRequest request)
         {
@@ -85,7 +86,11 @@ namespace Demo.Presentation.Controllers
             try
             {
                 var result = _departmentService.Update(request);
-                if (result > 0) return RedirectToAction(nameof(Index));
+                if (result > 0)
+                {
+                    TempData["Message"] = "Employee updated successfully!";
+                    return RedirectToAction(nameof(Index));
+                }
 
                 ModelState.AddModelError(string.Empty, "Can't Update Department Now");
                 return View(request);
@@ -113,7 +118,7 @@ namespace Demo.Presentation.Controllers
         //    if (department is null) return NotFound();
         //    return View(department);
         //}
-
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public IActionResult ConfirmDelete(int? id)
         {

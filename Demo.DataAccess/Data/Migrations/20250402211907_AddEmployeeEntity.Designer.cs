@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demo.DataAccess.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(Context.ApplicationDbContext))]
     [Migration("20250402211907_AddEmployeeEntity")]
     partial class AddEmployeeEntity
     {

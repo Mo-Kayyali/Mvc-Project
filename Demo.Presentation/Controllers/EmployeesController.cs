@@ -1,5 +1,6 @@
 ﻿using Demo.BusinessLogic.Services;
 using Demo.DataAccess.Models.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Demo.Presentation.Controllers
@@ -11,6 +12,7 @@ namespace Demo.Presentation.Controllers
         private readonly IWebHostEnvironment _env = webHostEnvironment;
         private readonly ILogger<EmployeesController> _logger = logger;
 
+        [Authorize]
         [HttpGet]
         public IActionResult Index(string? SearchValue)
         {
@@ -18,7 +20,7 @@ namespace Demo.Presentation.Controllers
             var Employees = _EmployeeService.GetAll(SearchValue);
             return View(Employees);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Create([FromServices] IDepartmentService departmentService)
         {
@@ -27,8 +29,9 @@ namespace Demo.Presentation.Controllers
             var items = new SelectList(departments,nameof(DepartmentResponse.Id),nameof(DepartmentResponse.Name));
             ViewBag.Departments=items;
             return View();
-        } 
+        }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(EmployeeRequest request)
         {
@@ -56,6 +59,7 @@ namespace Demo.Presentation.Controllers
 
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Details(int? id)
         {
@@ -65,7 +69,7 @@ namespace Demo.Presentation.Controllers
             if (Employee is null) return NotFound();
             return View(Employee);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Edit(int? id, [FromServices] IDepartmentService departmentService)
         {
@@ -95,6 +99,7 @@ namespace Demo.Presentation.Controllers
             return View(employeeRequest);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, EmployeeUpdateRequest request)
         {
@@ -121,7 +126,7 @@ namespace Demo.Presentation.Controllers
             return View(request);
         }
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult Delete(int? id)
         {
@@ -132,6 +137,7 @@ namespace Demo.Presentation.Controllers
             return View(Employee);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public IActionResult ConfirmDelete(int? id)
         {

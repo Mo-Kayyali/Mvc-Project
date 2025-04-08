@@ -11,7 +11,7 @@ namespace Demo.DataAccess.Models
     {
         public string Name { get; set; } = null!;
         public int? Age { get; set; }
-        public string ? Address { get; set; }
+        public string? Address { get; set; }
         public decimal Salary { get; set; }
         public bool IsActive { get; set; }
         public string? Email { get; set; }
@@ -21,5 +21,6 @@ namespace Demo.DataAccess.Models
         public EmployeeType EmployeeType { get; set; }
         public Department? Department { get; set; }
         public int? DepartmentId { get; set; }
+        public string? ImageName { get; set; }
     }
 }

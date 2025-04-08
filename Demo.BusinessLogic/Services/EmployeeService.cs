@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Demo.BusinessLogic.Services.AttachmentService;
 
 
 namespace Demo.BusinessLogic.Services
 {
-    public class EmployeeService(IUnitOfWork unitOfWork,IMapper mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfWork unitOfWork,IMapper mapper, IAttachmentService attachmentService) : IEmployeeService
     {
         //private readonly IEmployeeRepository _unitOfWork.Employees = repository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
+        private readonly IAttachmentService _attachmentService = attachmentService;
 
         //GetAll
         public IEnumerable<EmployeeResponse> GetAll(string? SeachValue)
         {
+            #region Old
             //var Employees = _unitOfWork.Employees.GetAll();
 
             //return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResponse>>(Employees);
@@ -31,7 +29,8 @@ namespace Demo.BusinessLogic.Services
             //    IsActive = e.IsActive,
             //    Name    = e.Name,
             //    Salary = e.Salary,
-            //});
+            //}); 
+            #endregion
 
             if (string.IsNullOrWhiteSpace(SeachValue))
             {
@@ -46,7 +45,8 @@ namespace Demo.BusinessLogic.Services
                     IsActive = e.IsActive,
                     Name = e.Name,
                     Salary = e.Salary,
-                    Department = e.Department.Name
+                    Department = e.Department.Name,
+                    Image = e.ImageName,
                 }, e => !e.IsDeleted,
                 e => e.Department);
             }
@@ -83,6 +83,10 @@ namespace Demo.BusinessLogic.Services
         public int Add(EmployeeRequest request)
         {
             var Employee = _mapper.Map<EmployeeRequest, Employee>(request);
+            if(request.Image is not null)
+            {
+               Employee.ImageName = _attachmentService.Upload(request.Image,"Imgs");
+            }
             _unitOfWork.Employees.Add(Employee);
             return _unitOfWork.SaveChanges();
         }
