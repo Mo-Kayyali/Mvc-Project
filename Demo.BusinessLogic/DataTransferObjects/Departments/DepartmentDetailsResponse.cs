@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferObjects
+namespace Demo.BusinessLogic.DataTransferObjects.Departments
 {
     public class DepartmentDetailsResponse
     {
@@ -15,7 +15,7 @@ namespace Demo.BusinessLogic.DataTransferObjects
         public int LastModifiedBy { get; set; }
 
         public DateTime LastModifiedOn { get; set; }
-        
+
         public string Name { get; set; } = null!;
 
         public string Code { get; set; } = null!;
