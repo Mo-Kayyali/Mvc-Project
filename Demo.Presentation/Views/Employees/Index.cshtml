@@ -54,7 +54,7 @@
                     <td>@Html.DisplayFor(_=>employee.IsActive)</td>
                     <td>@Html.DisplayFor(_=>employee.Gender)</td>
 
-                    <partial name="_ButtonsPartial" model="@employee.Id" />
+                    <partial name="_ButtonsPartial" model="@employee.Id.ToString()" />
 
                 </tr>
                 <!-- Delete Modal -->

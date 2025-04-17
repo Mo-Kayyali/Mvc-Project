@@ -1,5 +1,6 @@
 using Demo.BusinessLogic.Services;
 using Demo.BusinessLogic.Services.AttachmentService;
+using Demo.BusinessLogic.Services.EmailSettings;
 using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Models;
 using Demo.DataAccess.Repositories;
@@ -33,6 +34,7 @@ namespace Demo.Presentation
             builder.Services.AddScoped<Func<IEmployeeRepository>>(provider  => provider.GetRequiredService<IEmployeeRepository>);
 
             builder.Services.AddTransient<IAttachmentService,AttachmentService>();
+            builder.Services.AddScoped<IEmailSettings, EmailSettings>();
 
 
 
@@ -45,7 +47,8 @@ namespace Demo.Presentation
             //    options.User.RequireUniqueEmail = true;
             //    options.Password.RequireUppercase = true;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
 
             //builder.Services.ConfigureApplicationCookie(options =>

@@ -51,7 +51,7 @@
                     <td>@Html.DisplayFor(d => department.Name)</td>
                     <td>@Html.DisplayFor(d => department.CreatedOn)</td>
 
-                    <partial name="_ButtonsPartial" model="@department.Id"/>
+                    <partial name="_ButtonsPartial" model="@department.Id.ToString()"/>
                 </tr>
                 <div class="modal fade" id="deleteModal-@department.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
