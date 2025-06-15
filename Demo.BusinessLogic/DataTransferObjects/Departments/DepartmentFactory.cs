@@ -14,7 +14,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
-            CreatedOn = DateOnly.FromDateTime(department.CreatedOn),
+            CreatedOn = department.CreatedOn,
             Code = department.Code
         };
 
@@ -45,6 +45,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
             Name = departmentRequest.Name,
             Description = departmentRequest.Description,
             Code = departmentRequest.Code,
+            CreatedOn = departmentRequest.CreatedOn
         };
 
         public static DepartmentUpdateRequest ToUpdateRequest(this DepartmentDetailsResponse department) => new()
@@ -52,7 +53,7 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
-            CreatedOn = DateOnly.FromDateTime(department.CreatedOn),
+            CreatedOn = department.CreatedOn,
             Code = department.Code,
         };
 

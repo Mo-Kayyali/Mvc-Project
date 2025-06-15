@@ -12,6 +12,6 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public string Code { get; set; } = null!;
-        public DateOnly CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

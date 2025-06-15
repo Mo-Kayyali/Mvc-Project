@@ -9,8 +9,8 @@ namespace Demo.BusinessLogic.DataTransferObjects.Departments
 {
     public class DepartmentRequest
     {
-        [Required(ErrorMessage = "Name Is Required!!!")]
-        [StringLength(maximumLength:50,MinimumLength =5)]
+        [Required(ErrorMessage = "Name Is Required!")]
+        [StringLength(maximumLength:50,MinimumLength =2)]
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;
         public string? Description { get; set; }
