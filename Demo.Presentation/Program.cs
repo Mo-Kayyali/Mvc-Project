@@ -1,7 +1,10 @@
 using Demo.BusinessLogic.Services;
+using Demo.BusinessLogic.Services.AttachmentService;
+using Demo.BusinessLogic.Services.EmailSettings;
 using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Models;
 using Demo.DataAccess.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Presentation
@@ -23,8 +26,35 @@ namespace Demo.Presentation
             });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<Func<IDepartmentRepository>>(provider =>()=>provider.GetRequiredService<IDepartmentRepository>());
+            builder.Services.AddScoped<Func<IEmployeeRepository>>(provider  => provider.GetRequiredService<IEmployeeRepository>);
 
+            builder.Services.AddTransient<IAttachmentService,AttachmentService>();
+            builder.Services.AddScoped<IEmailSettings, EmailSettings>();
+
+
+
+
+            //builder.Services.AddAutoMapper(x=>x.AddProfile(new EmployeeProfile));
+            builder.Services.AddAutoMapper(typeof(Demo.BusinessLogic.AssemblyRefernce).Assembly);
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+            //    options.User.RequireUniqueEmail = true;
+            //    options.Password.RequireUppercase = true;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+
+            //builder.Services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.LoginPath = "Account/Login";
+            //});
 
             #endregion
 
@@ -44,9 +74,12 @@ namespace Demo.Presentation
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
 
             #endregion
 
