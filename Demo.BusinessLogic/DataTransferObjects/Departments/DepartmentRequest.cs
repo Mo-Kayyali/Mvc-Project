@@ -5,14 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferObjects
+namespace Demo.BusinessLogic.DataTransferObjects.Departments
 {
     public class DepartmentRequest
     {
-        [Required(ErrorMessage = "Name Is Required!!!")]
+        [Required(ErrorMessage = "Name Is Required!")]
+        [StringLength(maximumLength:50,MinimumLength =2)]
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
         public DateTime CreatedOn { get; set; }
 
     }

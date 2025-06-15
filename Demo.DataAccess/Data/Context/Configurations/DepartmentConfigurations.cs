@@ -9,7 +9,7 @@ namespace Demo.DataAccess.Data.Context.Configurations
 {
     internal class DepartmentConfigurations : IEntityTypeConfiguration<Department>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Department> builder)
+        public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.Property(D => D.Id)
                 .UseIdentityColumn(10, 10);
